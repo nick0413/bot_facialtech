@@ -21,8 +21,4 @@ correo='facialteccali@gmail.com'
 password='1018472666123'
 credenciales=[correo,password]
 
-
-# func.update_range(driver,archivo,dates1,dates2,pagina,credenciales)
-
 func.update_range(driver,archivo,dates1,dates2,pagina,credenciales)
-# time.sleep(1000)

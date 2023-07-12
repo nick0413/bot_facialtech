@@ -1,2 +1,20 @@
 
 Datos.csv
+*.pyc
+*.toc
+*.spec
+*.csv
+*.zip
+*.pyz
+*.manifest
+*.pkg
+__pycache__/funciones.cpython-311.pyc
+build/update_diario/warn-update_diario.txt
+build/update_historico/warn-update_historico.txt
+build/update_diario/xref-update_diario.html
+__pycache__/funciones.cpython-311.pyc
+build/update_historico/xref-update_historico.html
+dist/update_diario.exe
+__pycache__/funciones.cpython-311.pyc
+*.pyc
+*.exe

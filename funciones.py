@@ -97,37 +97,6 @@ def get_row(driver,pagina,d1,credenciales,fecha):
 	return new_row
 
 
-
-
-def update_file_daily(driver,archivo,fecha,d1,pagina,credenciales):
-
-	new_row=get_row(driver,pagina,d1,credenciales,fecha)
-	driver.quit()
-	df=pd.DataFrame(columns=labels)
-    
-	file_exists = exists(archivo)
-
-	if not file_exists:
-		df=pd.DataFrame(columns=labels)
-		# print(df)
-
-	if file_exists:
-		df=pd.read_csv(archivo)
-
-
-	if	fecha not in df.values :
-		print(f"fecha={fecha}")
-		df = df.append(new_row, ignore_index=True)
-		
-	else:
-		index=df.index
-		index_bool=(df["fecha"] == fecha)
-		cumplen=index[index_bool].to_list()
-		print(f"actualizando fila{cumplen}")
-		df.loc[cumplen[0]]=new_row
-		print(df)
-		df.to_csv(archivo,index=False)
-
 def access_page(driver,credenciales):
 	correo=credenciales[0]
 	password=credenciales[1]
@@ -198,8 +167,7 @@ def update_range(driver,archivo,fechas,ds,pagina,credenciales):
 
 	driver.get(pagina)
 	access_page(driver,credenciales)
-	print(ds)
-	print(fechas)
+
 
 	for i in range(len(fechas)):
 		fill_and_search(driver,ds[i])
@@ -213,20 +181,47 @@ def update_range(driver,archivo,fechas,ds,pagina,credenciales):
 		
 		else:
 
-			# ind=df.loc[df["fecha"]==fechas[i]]
-			# df.loc[ind]=new_row
 			print(f"fecha={fechas[i]}")
 			index = df.loc[df['fecha'] == fechas[i]].index
 			df.loc[index] = new_row
-			# index=df.index
-			# index_bool=(df["fecha"] == fechas[i])
-			# cumplen=index[index_bool].to_list()
-			# df.loc[cumplen[0]]=new_row
 
 
-		time.sleep(0.5)
+
+		time.sleep(0.2)
 
 	df.to_csv(archivo,index=False)
 
 	driver.quit()
-		
+
+
+def update_daily(driver,archivo,fecha,d1,pagina,credenciales):
+
+	file_exists = exists(archivo)
+
+	if not file_exists:
+		df=pd.DataFrame(columns=labels)
+		# print(df)
+ 
+	else:
+		df=pd.read_csv(archivo)
+
+	driver.get(pagina)
+	access_page(driver,credenciales)
+
+	fill_and_search(driver,d1)
+	datos=get_datos(driver,fecha)
+	new_row=panda_series(labels,datos)
+
+	if	fecha not in df.values :
+		print(f"fecha={fecha}")
+		df=pd.concat([new_row,df.loc[:]],sort=False).reset_index(drop=True)
+	
+	else:
+
+		print(f"fecha={fecha}")
+		index = df.loc[df['fecha'] == fecha].index
+		df.loc[index] = new_row
+	
+	
+	df.to_csv(archivo,index=False)
+	driver.quit()

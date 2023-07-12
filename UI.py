@@ -7,7 +7,9 @@ from tkcalendar import Calendar
 def select_date():
     selected_date = cal.selection_get()
     print(selected_date)
+    text1.set(selected_date)
 
+text1=tk.StringVar(value='XD')
 # Create the main Tkinter window
 window = tk.Tk()
 window.title("Date Selector")
